@@ -15,46 +15,14 @@ const STORAGE_KEYS = {
   ACTIVITY_LOG: 'agency_db_activity_log_v5'
 };
 
-// Default initial datasets for Tootherise & Go Menu Dual-Business Suite
-const MOCK_CLIENTS = [
-  { id: 'cli_1', company: 'tootherise', name: 'Acme E-Commerce Solutions', contact: 'Vikram Sharma | vikram@acme.in', email: 'vikram@acme.in', phone: '+91 98765 11223', serviceName: 'Full Stack E-Commerce Web App', startDate: '2026-07-01', planType: 'one-time', amount: 85000, status: 'Active', createdAt: new Date().toISOString() },
-  { id: 'cli_2', company: 'gomenu', name: 'Royal Palace Hotel & Resort', contact: 'Rajesh Verma (General Manager)', email: 'manager@royalpalace.com', phone: '+91 99887 66554', serviceName: 'Hotel POS & Room Reservation Suite', startDate: '2026-07-10', planType: 'yearly', amount: 65000, status: 'Active', createdAt: new Date().toISOString() },
-  { id: 'cli_3', company: 'tootherise', name: 'Nexus Mobile Tech', contact: 'Ananya Gupta | info@nexus.app', email: 'info@nexus.app', phone: '+91 91234 56789', serviceName: 'Android & iOS Mobile App Development', startDate: '2026-07-15', planType: 'one-time', amount: 120000, status: 'Active', createdAt: new Date().toISOString() },
-  { id: 'cli_4', company: 'gomenu', name: 'Spice Grill Restaurant & Lounge', contact: 'Chef Samar Singh', email: 'contact@spicegrill.in', phone: '+91 97766 55443', serviceName: 'Digital QR Menu & Kitchen Display System', startDate: '2026-07-18', planType: 'monthly', amount: 35000, status: 'Active', createdAt: new Date().toISOString() }
-];
-
-const MOCK_WORK_ORDERS = [
-  { id: 'wrk_1', company: 'tootherise', clientId: 'cli_1', clientName: 'Acme E-Commerce Solutions', description: 'Integrate UPI Payment Gateway & Product Catalog', dateReceived: '2026-07-02', deadline: '2026-08-15', assignedTo: 'Alex Mercer', status: 'In Progress', priority: 'High', createdAt: new Date().toISOString() },
-  { id: 'wrk_2', company: 'gomenu', clientId: 'cli_2', clientName: 'Royal Palace Hotel & Resort', description: 'Setup Hotel Front Desk Billing & Room Booking Software', dateReceived: '2026-07-11', deadline: '2026-07-28', assignedTo: 'Rehan Gouri', status: 'Completed', priority: 'High', createdAt: new Date().toISOString() },
-  { id: 'wrk_3', company: 'gomenu', clientId: 'cli_4', clientName: 'Spice Grill Restaurant & Lounge', description: 'Configure Table QR Ordering & Kitchen Thermal Printer', dateReceived: '2026-07-19', deadline: '2026-08-05', assignedTo: 'Rehan Gouri', status: 'In Progress', priority: 'Medium', createdAt: new Date().toISOString() }
-];
-
-const MOCK_CLIENT_PAYMENTS = [
-  { id: 'pay_1', company: 'tootherise', clientId: 'cli_1', clientName: 'Acme E-Commerce Solutions', totalAgreed: 85000, amountReceived: 50000, paymentDate: '2026-07-05', paymentMethod: 'Bank Transfer', installments: [{ id: 'inst_1', date: '2026-07-05', amount: 50000, method: 'Bank Transfer', notes: '50% advance for E-Commerce web app' }], notes: '50% advance received', createdAt: new Date().toISOString() },
-  { id: 'pay_2', company: 'gomenu', clientId: 'cli_2', clientName: 'Royal Palace Hotel & Resort', totalAgreed: 65000, amountReceived: 40000, paymentDate: '2026-07-12', paymentMethod: 'UPI (GPay/PhonePe/Paytm)', installments: [{ id: 'inst_2', date: '2026-07-12', amount: 40000, method: 'UPI (GPay/PhonePe/Paytm)', notes: 'Advance for Hotel Management Software' }], notes: 'Initial setup advance', createdAt: new Date().toISOString() },
-  { id: 'pay_3', company: 'gomenu', clientId: 'cli_4', clientName: 'Spice Grill Restaurant & Lounge', totalAgreed: 35000, amountReceived: 20000, paymentDate: '2026-07-20', paymentMethod: 'UPI (GPay/PhonePe/Paytm)', installments: [{ id: 'inst_3', date: '2026-07-20', amount: 20000, method: 'UPI (GPay/PhonePe/Paytm)', notes: 'QR Digital Menu setup fee' }], notes: 'QR System advance', createdAt: new Date().toISOString() }
-];
-
-const MOCK_TEAM_MEMBERS = [
-  { id: 'tm_1', name: 'Alex Mercer', role: 'Senior Web & App Developer', contact: 'alex@tootherise.dev', createdAt: new Date().toISOString() },
-  { id: 'tm_2', name: 'Rehan Gouri', role: 'Hotel System Implementation Specialist', contact: 'rehan@gomenu.app', createdAt: new Date().toISOString() }
-];
-
-const MOCK_TEAM_PAYMENTS = [
-  { id: 'tpay_1', company: 'tootherise', teamMember: 'Alex Mercer', workAssigned: 'E-Commerce Backend & Payment API', amountPaid: 25000, datePaid: '2026-07-10', paymentMethod: 'Bank Transfer', notes: 'Phase 1 developer payout', createdAt: new Date().toISOString() },
-  { id: 'tpay_2', company: 'gomenu', teamMember: 'Rehan Gouri', workAssigned: 'Royal Palace Hotel POS Onboarding', amountPaid: 18000, datePaid: '2026-07-15', paymentMethod: 'UPI', notes: 'Hotel software setup payout', createdAt: new Date().toISOString() }
-];
-
-const MOCK_EXPENSES = [
-  { id: 'exp_1', company: 'tootherise', title: 'AWS Cloud Server & CDN Infrastructure', category: 'Hosting/Cloud', amount: 4500, expenseDate: '2026-07-05', paymentMethod: 'Credit Card', notes: 'Cloud hosting for client web apps', createdAt: new Date().toISOString() },
-  { id: 'exp_2', company: 'gomenu', title: 'Thermal Receipt Printers & QR Hardware', category: 'Equipment', amount: 8200, expenseDate: '2026-07-18', paymentMethod: 'Bank Transfer', notes: 'Hardware setup for Go Menu hotel clients', createdAt: new Date().toISOString() }
-];
-
-const MOCK_ACTIVITY_LOG = [
-  { id: 'act_1', text: 'Configured Dual-Business Suite for Tootherise & Go Menu', type: 'system', timestamp: new Date().toISOString() },
-  { id: 'act_2', text: 'Added client "Royal Palace Hotel & Resort" (Go Menu)', type: 'client', timestamp: new Date().toISOString() },
-  { id: 'act_3', text: 'Recorded payment of ₹50,000 from Acme E-Commerce Solutions (Tootherise)', type: 'payment', timestamp: new Date().toISOString() }
-];
+// Clean initial datasets for fresh production use
+const MOCK_CLIENTS = [];
+const MOCK_WORK_ORDERS = [];
+const MOCK_CLIENT_PAYMENTS = [];
+const MOCK_TEAM_MEMBERS = [];
+const MOCK_TEAM_PAYMENTS = [];
+const MOCK_EXPENSES = [];
+const MOCK_ACTIVITY_LOG = [];
 
 const Store = {
   activeCompany: localStorage.getItem('agency_active_company') || 'all',
@@ -97,26 +65,13 @@ const Store = {
   },
 
   init() {
-    const clientsRaw = localStorage.getItem(STORAGE_KEYS.CLIENTS);
-    if (clientsRaw === null || clientsRaw === '[]') this.setItem(STORAGE_KEYS.CLIENTS, MOCK_CLIENTS);
-
-    const workRaw = localStorage.getItem(STORAGE_KEYS.WORK_ORDERS);
-    if (workRaw === null || workRaw === '[]') this.setItem(STORAGE_KEYS.WORK_ORDERS, MOCK_WORK_ORDERS);
-
-    const payRaw = localStorage.getItem(STORAGE_KEYS.CLIENT_PAYMENTS);
-    if (payRaw === null || payRaw === '[]') this.setItem(STORAGE_KEYS.CLIENT_PAYMENTS, MOCK_CLIENT_PAYMENTS);
-
-    const teamRaw = localStorage.getItem(STORAGE_KEYS.TEAM_MEMBERS);
-    if (teamRaw === null || teamRaw === '[]') this.setItem(STORAGE_KEYS.TEAM_MEMBERS, MOCK_TEAM_MEMBERS);
-
-    const teamPayRaw = localStorage.getItem(STORAGE_KEYS.TEAM_PAYMENTS);
-    if (teamPayRaw === null || teamPayRaw === '[]') this.setItem(STORAGE_KEYS.TEAM_PAYMENTS, MOCK_TEAM_PAYMENTS);
-
-    const expRaw = localStorage.getItem(STORAGE_KEYS.EXPENSES);
-    if (expRaw === null || expRaw === '[]') this.setItem(STORAGE_KEYS.EXPENSES, MOCK_EXPENSES);
-
-    const logRaw = localStorage.getItem(STORAGE_KEYS.ACTIVITY_LOG);
-    if (logRaw === null || logRaw === '[]') this.setItem(STORAGE_KEYS.ACTIVITY_LOG, MOCK_ACTIVITY_LOG);
+    if (localStorage.getItem(STORAGE_KEYS.CLIENTS) === null) this.setItem(STORAGE_KEYS.CLIENTS, []);
+    if (localStorage.getItem(STORAGE_KEYS.WORK_ORDERS) === null) this.setItem(STORAGE_KEYS.WORK_ORDERS, []);
+    if (localStorage.getItem(STORAGE_KEYS.CLIENT_PAYMENTS) === null) this.setItem(STORAGE_KEYS.CLIENT_PAYMENTS, []);
+    if (localStorage.getItem(STORAGE_KEYS.TEAM_MEMBERS) === null) this.setItem(STORAGE_KEYS.TEAM_MEMBERS, []);
+    if (localStorage.getItem(STORAGE_KEYS.TEAM_PAYMENTS) === null) this.setItem(STORAGE_KEYS.TEAM_PAYMENTS, []);
+    if (localStorage.getItem(STORAGE_KEYS.EXPENSES) === null) this.setItem(STORAGE_KEYS.EXPENSES, []);
+    if (localStorage.getItem(STORAGE_KEYS.ACTIVITY_LOG) === null) this.setItem(STORAGE_KEYS.ACTIVITY_LOG, []);
   },
 
   clearAllData() {
@@ -131,14 +86,7 @@ const Store = {
   },
 
   resetToDefaults() {
-    this.setItem(STORAGE_KEYS.CLIENTS, MOCK_CLIENTS);
-    this.setItem(STORAGE_KEYS.WORK_ORDERS, MOCK_WORK_ORDERS);
-    this.setItem(STORAGE_KEYS.CLIENT_PAYMENTS, MOCK_CLIENT_PAYMENTS);
-    this.setItem(STORAGE_KEYS.TEAM_MEMBERS, MOCK_TEAM_MEMBERS);
-    this.setItem(STORAGE_KEYS.TEAM_PAYMENTS, MOCK_TEAM_PAYMENTS);
-    this.setItem(STORAGE_KEYS.EXPENSES, MOCK_EXPENSES);
-    this.setItem(STORAGE_KEYS.ACTIVITY_LOG, MOCK_ACTIVITY_LOG);
-    this.logActivity('Database reset to Tootherise & Go Menu default records', 'system');
+    this.clearAllData();
   },
 
   getActivityLog() {

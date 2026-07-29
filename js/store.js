@@ -798,6 +798,14 @@ const Store = {
       totalPendingFromClients += pending;
     });
 
+    clients.forEach(c => {
+      const existsInPay = clientPayments.some(p => p.clientId === c.id || p.clientName.toLowerCase() === c.name.toLowerCase());
+      if (!existsInPay && c.amount > 0) {
+        totalAgreed += c.amount;
+        totalPendingFromClients += c.amount;
+      }
+    });
+
     let totalPaidToTeam = 0;
     teamPayments.forEach(tp => {
       totalPaidToTeam += (tp.amountPaid || 0);

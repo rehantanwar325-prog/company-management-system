@@ -104,7 +104,8 @@ const UI = {
     document.getElementById('dash-team-paid').textContent = this.formatCurrency(metrics.totalPaidToTeam);
     document.getElementById('dash-expenses').textContent = this.formatCurrency(metrics.totalExpenses);
     document.getElementById('dash-pending').textContent = this.formatCurrency(metrics.totalPendingFromClients);
-    document.getElementById('dash-balance').textContent = this.formatCurrency(metrics.companyBalance);
+    const revEl = document.getElementById('dash-total-revenue') || document.getElementById('dash-balance');
+    if (revEl) revEl.textContent = this.formatCurrency(metrics.totalAgreed);
     document.getElementById('dash-active-clients').textContent = metrics.activeClientsCount;
     document.getElementById('dash-pending-orders').textContent = metrics.pendingWorkCount;
 

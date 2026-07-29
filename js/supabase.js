@@ -14,7 +14,7 @@ const SupabaseService = {
   isConnected: false,
 
   getUrl() {
-    return localStorage.getItem(SUPABASE_STORAGE_KEYS.URL) || '';
+    return localStorage.getItem(SUPABASE_STORAGE_KEYS.URL) || 'https://oblymoynkedhmwjotpoj.supabase.co';
   },
 
   getKey() {

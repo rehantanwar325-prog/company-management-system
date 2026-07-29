@@ -39,7 +39,10 @@ const Store = {
   filterByCompany(items) {
     const current = this.getActiveCompany();
     if (current === 'all') return items;
-    return items.filter(item => (item.company || 'tootherise') === current);
+    return items.filter(item => {
+      const comp = item.company || 'tootherise';
+      return comp === current || comp === 'both';
+    });
   },
 
   generateId(prefix = 'item') {

@@ -10,6 +10,17 @@ const UI = {
     return '₹' + num.toLocaleString('en-IN', { maximumFractionDigits: 0 });
   },
 
+  getCompanyBadge(company) {
+    const c = company || 'tootherise';
+    if (c === 'gomenu') {
+      return `<span class="badge-company badge-gomenu"><i class="fa-solid fa-hotel"></i> Go Menu</span>`;
+    }
+    if (c === 'both') {
+      return `<span class="badge-company badge-both"><i class="fa-solid fa-globe"></i> Both Companies</span>`;
+    }
+    return `<span class="badge-company badge-tootherise"><i class="fa-solid fa-rocket"></i> Tootherise</span>`;
+  },
+
   formatDate(dateStr) {
     if (!dateStr) return 'N/A';
     try {
@@ -184,7 +195,7 @@ const UI = {
       const pendingText = pendingBaki > 0 ? `${this.formatCurrency(pendingBaki)} Baki` : '0 Baki (Cleared)';
 
       const totalDeal = client.calculatedAgreed || client.amount;
-      const companyTag = `<span class="badge-company badge-${client.company || 'tootherise'}"><i class="fa-solid ${client.company === 'gomenu' ? 'fa-hotel' : 'fa-rocket'}"></i> ${client.company === 'gomenu' ? 'Go Menu' : 'Tootherise'}</span>`;
+      const companyTag = this.getCompanyBadge(client.company);
 
       return `
         <tr>
@@ -286,7 +297,7 @@ const UI = {
       const pending = Math.max(0, (pay.totalAgreed || 0) - (pay.amountReceived || 0));
       const percentPaid = pay.totalAgreed > 0 ? Math.min(100, Math.round((pay.amountReceived / pay.totalAgreed) * 100)) : 0;
       const installmentsCount = Array.isArray(pay.installments) ? pay.installments.length : (pay.amountReceived > 0 ? 1 : 0);
-      const companyTag = `<span class="badge-company badge-${pay.company || 'tootherise'}"><i class="fa-solid ${pay.company === 'gomenu' ? 'fa-hotel' : 'fa-rocket'}"></i> ${pay.company === 'gomenu' ? 'Go Menu' : 'Tootherise'}</span>`;
+      const companyTag = this.getCompanyBadge(pay.company);
 
       return `
         <tr>
@@ -385,7 +396,7 @@ const UI = {
 
     tbody.innerHTML = orders.map(order => {
       const prioSlug = order.priority.toLowerCase();
-      const companyTag = `<span class="badge-company badge-${order.company || 'tootherise'}"><i class="fa-solid ${order.company === 'gomenu' ? 'fa-hotel' : 'fa-rocket'}"></i> ${order.company === 'gomenu' ? 'Go Menu' : 'Tootherise'}</span>`;
+      const companyTag = this.getCompanyBadge(order.company);
 
       let deadlineBadge = `<span class="cell-sub"><i class="fa-regular fa-clock"></i> ${this.formatDate(order.deadline)}</span>`;
       if (order.deadline && new Date(order.deadline) < new Date() && order.status !== 'Delivered' && order.status !== 'Completed') {
@@ -471,7 +482,7 @@ const UI = {
     }
 
     tbody.innerHTML = teamPayments.map(tp => {
-      const companyTag = `<span class="badge-company badge-${tp.company || 'tootherise'}"><i class="fa-solid ${tp.company === 'gomenu' ? 'fa-hotel' : 'fa-rocket'}"></i> ${tp.company === 'gomenu' ? 'Go Menu' : 'Tootherise'}</span>`;
+      const companyTag = this.getCompanyBadge(tp.company);
       return `
         <tr>
           <td>
@@ -552,7 +563,7 @@ const UI = {
     }
 
     tbody.innerHTML = expenses.map(exp => {
-      const companyTag = `<span class="badge-company badge-${exp.company || 'tootherise'}"><i class="fa-solid ${exp.company === 'gomenu' ? 'fa-hotel' : 'fa-rocket'}"></i> ${exp.company === 'gomenu' ? 'Go Menu' : 'Tootherise'}</span>`;
+      const companyTag = this.getCompanyBadge(exp.company);
       return `
         <tr>
           <td>

@@ -97,14 +97,26 @@ const Store = {
   },
 
   init() {
-    // If v5 keys don't exist, initialize with rich initial mock datasets
-    if (localStorage.getItem(STORAGE_KEYS.CLIENTS) === null) this.setItem(STORAGE_KEYS.CLIENTS, MOCK_CLIENTS);
-    if (localStorage.getItem(STORAGE_KEYS.WORK_ORDERS) === null) this.setItem(STORAGE_KEYS.WORK_ORDERS, MOCK_WORK_ORDERS);
-    if (localStorage.getItem(STORAGE_KEYS.CLIENT_PAYMENTS) === null) this.setItem(STORAGE_KEYS.CLIENT_PAYMENTS, MOCK_CLIENT_PAYMENTS);
-    if (localStorage.getItem(STORAGE_KEYS.TEAM_MEMBERS) === null) this.setItem(STORAGE_KEYS.TEAM_MEMBERS, MOCK_TEAM_MEMBERS);
-    if (localStorage.getItem(STORAGE_KEYS.TEAM_PAYMENTS) === null) this.setItem(STORAGE_KEYS.TEAM_PAYMENTS, MOCK_TEAM_PAYMENTS);
-    if (localStorage.getItem(STORAGE_KEYS.EXPENSES) === null) this.setItem(STORAGE_KEYS.EXPENSES, MOCK_EXPENSES);
-    if (localStorage.getItem(STORAGE_KEYS.ACTIVITY_LOG) === null) this.setItem(STORAGE_KEYS.ACTIVITY_LOG, MOCK_ACTIVITY_LOG);
+    const clientsRaw = localStorage.getItem(STORAGE_KEYS.CLIENTS);
+    if (clientsRaw === null || clientsRaw === '[]') this.setItem(STORAGE_KEYS.CLIENTS, MOCK_CLIENTS);
+
+    const workRaw = localStorage.getItem(STORAGE_KEYS.WORK_ORDERS);
+    if (workRaw === null || workRaw === '[]') this.setItem(STORAGE_KEYS.WORK_ORDERS, MOCK_WORK_ORDERS);
+
+    const payRaw = localStorage.getItem(STORAGE_KEYS.CLIENT_PAYMENTS);
+    if (payRaw === null || payRaw === '[]') this.setItem(STORAGE_KEYS.CLIENT_PAYMENTS, MOCK_CLIENT_PAYMENTS);
+
+    const teamRaw = localStorage.getItem(STORAGE_KEYS.TEAM_MEMBERS);
+    if (teamRaw === null || teamRaw === '[]') this.setItem(STORAGE_KEYS.TEAM_MEMBERS, MOCK_TEAM_MEMBERS);
+
+    const teamPayRaw = localStorage.getItem(STORAGE_KEYS.TEAM_PAYMENTS);
+    if (teamPayRaw === null || teamPayRaw === '[]') this.setItem(STORAGE_KEYS.TEAM_PAYMENTS, MOCK_TEAM_PAYMENTS);
+
+    const expRaw = localStorage.getItem(STORAGE_KEYS.EXPENSES);
+    if (expRaw === null || expRaw === '[]') this.setItem(STORAGE_KEYS.EXPENSES, MOCK_EXPENSES);
+
+    const logRaw = localStorage.getItem(STORAGE_KEYS.ACTIVITY_LOG);
+    if (logRaw === null || logRaw === '[]') this.setItem(STORAGE_KEYS.ACTIVITY_LOG, MOCK_ACTIVITY_LOG);
   },
 
   clearAllData() {

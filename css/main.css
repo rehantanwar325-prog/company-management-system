@@ -523,6 +523,54 @@ body {
     display: block;
   }
   .content-area {
-    padding: 1.25rem;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .top-header {
+    height: auto;
+    padding: 0.85rem 1rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+  .header-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    width: 100%;
+  }
+  .company-switcher {
+    width: 100%;
+    justify-content: space-between;
+    margin-right: 0;
+    overflow-x: auto;
+  }
+  .company-tab {
+    flex: 1;
+    justify-content: center;
+    padding: 0.45rem 0.5rem;
+    font-size: 0.78rem;
+    white-space: nowrap;
+  }
+  .header-title-group h1 {
+    font-size: 1.15rem;
+  }
+  .header-title-group p {
+    font-size: 0.75rem;
+    display: none;
+  }
+  .grid-stats {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  .dashboard-grid {
+    grid-template-columns: 1fr;
   }
 }

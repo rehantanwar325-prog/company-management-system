@@ -33,7 +33,7 @@ const Charts = {
         labels: monthLabels,
         datasets: [
           {
-            label: 'Income Received ($)',
+            label: 'Income Received (₹)',
             data: incomeData,
             backgroundColor: 'rgba(16, 185, 129, 0.75)',
             borderColor: '#10B981',
@@ -41,7 +41,7 @@ const Charts = {
             borderRadius: 6
           },
           {
-            label: 'Team Payouts ($)',
+            label: 'Team Payouts (₹)',
             data: teamData,
             backgroundColor: 'rgba(99, 102, 241, 0.75)',
             borderColor: '#6366F1',
@@ -49,7 +49,7 @@ const Charts = {
             borderRadius: 6
           },
           {
-            label: 'Agency Expenses ($)',
+            label: 'Agency Expenses (₹)',
             data: expenseData,
             backgroundColor: 'rgba(244, 63, 94, 0.75)',
             borderColor: '#F43F5E',
@@ -86,7 +86,7 @@ const Charts = {
           },
           y: {
             grid: { color: 'rgba(255, 255, 255, 0.05)' },
-            ticks: { color: '#9CA3AF', font: { family: 'Plus Jakarta Sans' }, callback: v => '$' + v }
+            ticks: { color: '#9CA3AF', font: { family: 'Plus Jakarta Sans' }, callback: v => '₹' + v }
           }
         }
       }

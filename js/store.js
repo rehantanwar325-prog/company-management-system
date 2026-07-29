@@ -6,13 +6,13 @@
  */
 
 const STORAGE_KEYS = {
-  CLIENTS: 'agency_db_clients_v5',
-  WORK_ORDERS: 'agency_db_work_orders_v5',
-  CLIENT_PAYMENTS: 'agency_db_client_payments_v5',
-  TEAM_MEMBERS: 'agency_db_team_members_v5',
-  TEAM_PAYMENTS: 'agency_db_team_payments_v5',
-  EXPENSES: 'agency_db_expenses_v5',
-  ACTIVITY_LOG: 'agency_db_activity_log_v5'
+  CLIENTS: 'agency_db_clients_v7',
+  WORK_ORDERS: 'agency_db_work_orders_v7',
+  CLIENT_PAYMENTS: 'agency_db_client_payments_v7',
+  TEAM_MEMBERS: 'agency_db_team_members_v7',
+  TEAM_PAYMENTS: 'agency_db_team_payments_v7',
+  EXPENSES: 'agency_db_expenses_v7',
+  ACTIVITY_LOG: 'agency_db_activity_log_v7'
 };
 
 // Clean initial datasets for fresh production use
@@ -75,6 +75,19 @@ const Store = {
   },
 
   clearAllData() {
+    try {
+      const keysToRemove = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && (k.startsWith('agency_db_') || k.startsWith('agency_active_company'))) {
+          keysToRemove.push(k);
+        }
+      }
+      keysToRemove.forEach(k => localStorage.removeItem(k));
+    } catch (e) {
+      console.error('Error clearing localStorage keys', e);
+    }
+
     this.setItem(STORAGE_KEYS.CLIENTS, []);
     this.setItem(STORAGE_KEYS.WORK_ORDERS, []);
     this.setItem(STORAGE_KEYS.CLIENT_PAYMENTS, []);
@@ -82,7 +95,6 @@ const Store = {
     this.setItem(STORAGE_KEYS.TEAM_PAYMENTS, []);
     this.setItem(STORAGE_KEYS.EXPENSES, []);
     this.setItem(STORAGE_KEYS.ACTIVITY_LOG, []);
-    this.logActivity('All database records cleared', 'system');
   },
 
   resetToDefaults() {

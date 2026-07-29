@@ -1,4 +1,4 @@
-ri<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -85,11 +85,15 @@ ri<!DOCTYPE html>
           <span>Light Mode</span>
         </button>
 
-        <div style="display:flex; gap:0.5rem; margin-top:0.5rem;">
-          <button class="btn btn-secondary btn-sm" style="flex:1; font-size:0.75rem;" onclick="App.exportBackup()" title="Download JSON Backup">
+        <div style="display:flex; gap:0.4rem; margin-top:0.5rem;">
+          <button class="btn btn-secondary btn-sm" style="flex:1; font-size:0.75rem; padding: 0.4rem 0.2rem;" onclick="App.exportBackup()" title="Download JSON Backup">
             <i class="fa-solid fa-download"></i> Backup
           </button>
-          <button class="btn btn-secondary btn-sm" style="flex:1; font-size:0.75rem;" onclick="App.resetSystemData()" title="Clear Database">
+          <button class="btn btn-secondary btn-sm" style="flex:1; font-size:0.75rem; padding: 0.4rem 0.2rem;" onclick="document.getElementById('import-file-input').click()" title="Restore JSON Backup">
+            <i class="fa-solid fa-upload"></i> Restore
+          </button>
+          <input type="file" id="import-file-input" accept=".json" style="display:none;" onchange="App.importBackup(this)">
+          <button class="btn btn-secondary btn-sm" style="flex:1; font-size:0.75rem; padding: 0.4rem 0.2rem;" onclick="App.resetSystemData()" title="Clear Database">
             <i class="fa-solid fa-trash-can"></i> Clear All
           </button>
         </div>
@@ -1047,10 +1051,15 @@ ri<!DOCTYPE html>
           </div>
         </div>
 
-        <div class="modal-footer" style="justify-content:space-between;">
-          <button type="button" class="btn btn-secondary btn-sm" onclick="App.pullCloudDataManually()">
-            <i class="fa-solid fa-cloud-arrow-down"></i> Pull Cloud Data
-          </button>
+        <div class="modal-footer" style="justify-content:space-between; flex-wrap:wrap; gap:0.5rem;">
+          <div style="display:flex; gap:0.5rem;">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="App.pullCloudDataManually()">
+              <i class="fa-solid fa-cloud-arrow-down"></i> Pull Cloud Data
+            </button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="App.copyMobileSyncLink()" title="Copy link to auto-sync mobile device">
+              <i class="fa-solid fa-mobile-screen-button"></i> Copy Mobile Link
+            </button>
+          </div>
           <div style="display:flex; gap:0.5rem;">
             <button type="button" class="btn btn-secondary" onclick="App.closeModal('supabase-modal')">Cancel</button>
             <button type="submit" class="btn btn-primary">Save & Connect Cloud</button>

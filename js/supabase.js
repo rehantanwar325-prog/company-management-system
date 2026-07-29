@@ -13,6 +13,24 @@ const SupabaseService = {
   client: null,
   isConnected: false,
 
+  checkUrlParams() {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const url = params.get('s_url') || params.get('supabase_url');
+      const key = params.get('s_key') || params.get('supabase_key');
+      
+      if (url && key) {
+        localStorage.setItem(SUPABASE_STORAGE_KEYS.URL, url.trim());
+        localStorage.setItem(SUPABASE_STORAGE_KEYS.KEY, key.trim());
+        // Clean URL params without reloading page
+        const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+        window.history.replaceState({ path: cleanUrl }, '', cleanUrl);
+      }
+    } catch (e) {
+      console.error('Error checking URL params for Supabase credentials:', e);
+    }
+  },
+
   getUrl() {
     return localStorage.getItem(SUPABASE_STORAGE_KEYS.URL) || 'https://oblymoynkedhmwjotpoj.supabase.co';
   },
@@ -27,7 +45,16 @@ const SupabaseService = {
     return this.init();
   },
 
+  generateShareableLink() {
+    const url = this.getUrl();
+    const key = this.getKey();
+    if (!url || !key) return null;
+    const baseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+    return `${baseUrl}?s_url=${encodeURIComponent(url)}&s_key=${encodeURIComponent(key)}`;
+  },
+
   init() {
+    this.checkUrlParams();
     const url = this.getUrl();
     const key = this.getKey();
 

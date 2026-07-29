@@ -17,6 +17,13 @@ const App = {
     if (window.SupabaseService) {
       SupabaseService.init();
       SupabaseService.pullAllDataFromCloud();
+
+      // Auto-pull fresh cloud data whenever user opens/switches back to tab
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible' && SupabaseService.client) {
+          SupabaseService.pullAllDataFromCloud();
+        }
+      });
     }
 
     const activeCompany = Store.getActiveCompany();
@@ -739,6 +746,20 @@ const App = {
     }
   },
 
+  copyMobileSyncLink() {
+    if (!window.SupabaseService) return;
+    const link = SupabaseService.generateShareableLink();
+    if (!link || !SupabaseService.getKey()) {
+      UI.showToast('Please enter & save Supabase Anon Key first to generate Mobile Sync link.', 'warning');
+      return;
+    }
+    navigator.clipboard.writeText(link).then(() => {
+      UI.showToast('Mobile Auto-Sync Link copied to clipboard! Send it to your phone & open it once.', 'success');
+    }).catch(() => {
+      prompt('Copy this Auto-Sync Link and open on your mobile phone:', link);
+    });
+  },
+
   confirmDelete(type, id, itemName) {
     this.pendingDelete = { type, id, itemName };
     document.getElementById('delete-item-name').textContent = itemName;
@@ -785,6 +806,29 @@ const App = {
     a.click();
     URL.revokeObjectURL(url);
     UI.showToast('Backup downloaded successfully', 'success');
+  },
+
+  importBackup(fileInput) {
+    const file = fileInput.files && fileInput.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const content = e.target.result;
+      const success = Store.importBackupJSON(content);
+      if (success) {
+        UI.renderAll();
+        UI.showToast('Data imported successfully!', 'success');
+        if (window.SupabaseService && SupabaseService.client) {
+          // Sync imported items to cloud if connected
+          const clients = Store.getItem(STORAGE_KEYS.CLIENTS, []);
+          clients.forEach(c => SupabaseService.syncClient(c));
+        }
+      } else {
+        UI.showToast('Failed to import data. Invalid JSON file format.', 'danger');
+      }
+      fileInput.value = '';
+    };
+    reader.readAsText(file);
   },
 
   resetSystemData() {

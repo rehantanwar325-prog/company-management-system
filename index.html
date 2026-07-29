@@ -122,6 +122,9 @@ ri<!DOCTYPE html>
               <i class="fa-solid fa-hotel"></i> Go Menu
             </button>
           </div>
+          <button class="btn btn-secondary btn-sm" onclick="App.openSupabaseModal()" title="Configure Supabase Cloud Database & Sync">
+            <span id="supabase-status-badge" class="badge-company"><i class="fa-solid fa-cloud-slash"></i> Supabase</span>
+          </button>
           <button class="btn btn-secondary btn-sm" onclick="App.openAddExpenseModal()">
             <i class="fa-solid fa-receipt"></i> Log Expense
           </button>
@@ -1010,8 +1013,52 @@ ri<!DOCTYPE html>
     </div>
   </div>
 
+  <!-- 9. SUPABASE CLOUD DATABASE CONFIG MODAL -->
+  <div class="modal-overlay" id="supabase-modal">
+    <div class="modal-container" style="max-width: 540px;">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-database" style="color:var(--accent-emerald)"></i> Supabase Cloud Sync Configuration</h3>
+        <button class="modal-close-btn" onclick="App.closeModal('supabase-modal')">&times;</button>
+      </div>
+      <form id="supabase-form">
+        <div class="modal-body">
+          <div style="background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.25); padding:0.85rem 1rem; border-radius:var(--radius-md); margin-bottom:1.25rem;">
+            <div style="font-size:0.82rem; color:var(--text-main); font-weight:600;">
+              <i class="fa-solid fa-circle-info" style="color:var(--accent-emerald)"></i> Save data online for Tootherise & Go Menu across all devices.
+            </div>
+            <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.35rem;">
+              Create all tables in 1 click by running <code>supabase_schema.sql</code> in your Supabase SQL Editor.
+            </div>
+          </div>
+
+          <div class="form-group full-width">
+            <label class="form-label">Supabase Project URL *</label>
+            <input type="url" id="supabase-url-input" class="form-control" placeholder="https://your-project.supabase.co" required>
+          </div>
+
+          <div class="form-group full-width">
+            <label class="form-label">Supabase Anon Public API Key *</label>
+            <input type="password" id="supabase-key-input" class="form-control" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6..." required>
+          </div>
+        </div>
+
+        <div class="modal-footer" style="justify-content:space-between;">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="App.pullCloudDataManually()">
+            <i class="fa-solid fa-cloud-arrow-down"></i> Pull Cloud Data
+          </button>
+          <div style="display:flex; gap:0.5rem;">
+            <button type="button" class="btn btn-secondary" onclick="App.closeModal('supabase-modal')">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save & Connect Cloud</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/store.js"></script>
+  <script src="js/supabase.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/charts.js"></script>
   <script src="js/app.js"></script>

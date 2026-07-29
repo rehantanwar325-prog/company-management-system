@@ -14,6 +14,11 @@ const App = {
     this.bindFormSubmissions();
     this.bindThemeToggle();
 
+    if (window.SupabaseService) {
+      SupabaseService.init();
+      SupabaseService.pullAllDataFromCloud();
+    }
+
     const activeCompany = Store.getActiveCompany();
     document.querySelectorAll('.company-tab').forEach(tab => {
       if (tab.getAttribute('data-company') === activeCompany) {
@@ -691,6 +696,47 @@ const App = {
       this.closeModal('expense-modal');
       UI.renderAll();
     });
+
+    // Supabase Form
+    document.getElementById('supabase-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const url = document.getElementById('supabase-url-input').value;
+      const key = document.getElementById('supabase-key-input').value;
+
+      if (window.SupabaseService) {
+        SupabaseService.setConfig(url, key);
+        const connected = await SupabaseService.testConnection();
+        if (connected) {
+          UI.showToast('Connected to Supabase Cloud successfully!', 'success');
+          SupabaseService.pullAllDataFromCloud();
+        } else {
+          UI.showToast('Config saved, but connection test failed. Verify URL/Key & SQL Schema.', 'warning');
+        }
+      }
+      this.closeModal('supabase-modal');
+    });
+  },
+
+  openSupabaseModal() {
+    if (window.SupabaseService) {
+      document.getElementById('supabase-url-input').value = SupabaseService.getUrl();
+      document.getElementById('supabase-key-input').value = SupabaseService.getKey();
+    }
+    this.openModal('supabase-modal');
+  },
+
+  async pullCloudDataManually() {
+    if (!window.SupabaseService || !SupabaseService.client) {
+      UI.showToast('Please configure & save Supabase URL & Key first', 'warning');
+      return;
+    }
+    UI.showToast('Pulling data from Supabase Cloud...', 'info');
+    const success = await SupabaseService.pullAllDataFromCloud();
+    if (success) {
+      UI.showToast('Successfully synced all data from Supabase Cloud', 'success');
+    } else {
+      UI.showToast('Failed to pull cloud data. Verify database schema.', 'danger');
+    }
   },
 
   confirmDelete(type, id, itemName) {

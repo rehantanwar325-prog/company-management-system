@@ -239,6 +239,8 @@ const Store = {
     clients.unshift(newClient);
     this.setItem(STORAGE_KEYS.CLIENTS, clients);
 
+    if (window.SupabaseService) SupabaseService.syncClient(newClient);
+
     if (newClient.amount > 0) {
       this.addClientPayment({
         company: newClient.company,
@@ -279,6 +281,8 @@ const Store = {
 
     this.setItem(STORAGE_KEYS.CLIENTS, clients);
 
+    if (window.SupabaseService) SupabaseService.syncClient(clients[index]);
+
     if (data.name && data.name.trim() !== oldName) {
       const newName = data.name.trim();
       const orders = this.getItem(STORAGE_KEYS.WORK_ORDERS, []).map(o => o.clientId === id ? { ...o, clientName: newName } : o);
@@ -299,6 +303,8 @@ const Store = {
 
     clients = clients.filter(c => c.id !== id);
     this.setItem(STORAGE_KEYS.CLIENTS, clients);
+
+    if (window.SupabaseService) SupabaseService.deleteClient(id);
 
     // Also delete associated payments and work orders
     const payments = this.getClientPayments().filter(p => p.clientId !== id && p.clientName.toLowerCase() !== target.name.toLowerCase());
@@ -360,6 +366,7 @@ const Store = {
 
     orders.unshift(newOrder);
     this.setItem(STORAGE_KEYS.WORK_ORDERS, orders);
+    if (window.SupabaseService) SupabaseService.syncWorkOrder(newOrder);
     this.logActivity(`Added work order for "${newOrder.clientName}" (${company === 'gomenu' ? 'Go Menu' : 'Tootherise'})`, 'work');
     return newOrder;
   },
@@ -394,6 +401,7 @@ const Store = {
     };
 
     this.setItem(STORAGE_KEYS.WORK_ORDERS, orders);
+    if (window.SupabaseService) SupabaseService.syncWorkOrder(orders[index]);
     this.logActivity(`Updated work order "${orders[index].description.substring(0, 30)}..." (${orders[index].status})`, 'work');
     return orders[index];
   },
@@ -405,6 +413,7 @@ const Store = {
 
     orders = orders.filter(o => o.id !== id);
     this.setItem(STORAGE_KEYS.WORK_ORDERS, orders);
+    if (window.SupabaseService) SupabaseService.deleteWorkOrder(id);
     this.logActivity(`Deleted work order for "${target.clientName}"`, 'work');
     return true;
   },
@@ -462,6 +471,7 @@ const Store = {
 
     payments.unshift(newPayment);
     this.setItem(STORAGE_KEYS.CLIENT_PAYMENTS, payments);
+    if (window.SupabaseService) SupabaseService.syncClientPayment(newPayment);
 
     if (doLog) {
       this.logActivity(`Recorded payment of ₹${amountReceived.toLocaleString('en-IN')} from ${newPayment.clientName} (${company === 'gomenu' ? 'Go Menu' : 'Tootherise'})`, 'payment');
@@ -501,6 +511,7 @@ const Store = {
     payments[index].paymentMethod = method;
 
     this.setItem(STORAGE_KEYS.CLIENT_PAYMENTS, payments);
+    if (window.SupabaseService) SupabaseService.syncClientPayment(payments[index]);
     this.logActivity(`Logged payment of ₹${amount.toLocaleString('en-IN')} on ${date} for "${payments[index].clientName}"`, 'payment');
     return payments[index];
   },
@@ -530,6 +541,7 @@ const Store = {
     };
 
     this.setItem(STORAGE_KEYS.CLIENT_PAYMENTS, payments);
+    if (window.SupabaseService) SupabaseService.syncClientPayment(payments[index]);
     this.logActivity(`Updated payment record for "${payments[index].clientName}"`, 'payment');
     return payments[index];
   },
@@ -541,6 +553,7 @@ const Store = {
 
     payments = payments.filter(p => p.id !== id);
     this.setItem(STORAGE_KEYS.CLIENT_PAYMENTS, payments);
+    if (window.SupabaseService) SupabaseService.deleteClientPayment(id);
     this.logActivity(`Deleted payment record of "${target.name || target.clientName}"`, 'payment');
     return true;
   },
@@ -576,6 +589,7 @@ const Store = {
 
     teamPayments.unshift(newTeamPayment);
     this.setItem(STORAGE_KEYS.TEAM_PAYMENTS, teamPayments);
+    if (window.SupabaseService) SupabaseService.syncTeamPayment(newTeamPayment);
     this.logActivity(`Paid ₹${amountPaid.toLocaleString('en-IN')} to team member "${newTeamPayment.teamMember}" (${company === 'gomenu' ? 'Go Menu' : 'Tootherise'})`, 'team_payment');
     return newTeamPayment;
   },
@@ -601,6 +615,7 @@ const Store = {
     };
 
     this.setItem(STORAGE_KEYS.TEAM_PAYMENTS, teamPayments);
+    if (window.SupabaseService) SupabaseService.syncTeamPayment(teamPayments[index]);
     this.logActivity(`Updated team payout for ${teamPayments[index].teamMember}`, 'team_payment');
     return teamPayments[index];
   },
@@ -612,6 +627,7 @@ const Store = {
 
     teamPayments = teamPayments.filter(tp => tp.id !== id);
     this.setItem(STORAGE_KEYS.TEAM_PAYMENTS, teamPayments);
+    if (window.SupabaseService) SupabaseService.deleteTeamPayment(id);
     this.logActivity(`Deleted payout record for ${target.teamMember}`, 'team_payment');
     return true;
   },
@@ -644,6 +660,7 @@ const Store = {
 
     expenses.unshift(newExpense);
     this.setItem(STORAGE_KEYS.EXPENSES, expenses);
+    if (window.SupabaseService) SupabaseService.syncExpense(newExpense);
     this.logActivity(`Added expense ₹${amount.toLocaleString('en-IN')} for "${newExpense.title}" (${company === 'gomenu' ? 'Go Menu' : 'Tootherise'})`, 'expense');
     return newExpense;
   },
@@ -665,6 +682,7 @@ const Store = {
     };
 
     this.setItem(STORAGE_KEYS.EXPENSES, expenses);
+    if (window.SupabaseService) SupabaseService.syncExpense(expenses[index]);
     this.logActivity(`Updated expense "${expenses[index].title}"`, 'expense');
     return expenses[index];
   },
@@ -676,6 +694,7 @@ const Store = {
 
     expenses = expenses.filter(e => e.id !== id);
     this.setItem(STORAGE_KEYS.EXPENSES, expenses);
+    if (window.SupabaseService) SupabaseService.deleteExpense(id);
     this.logActivity(`Deleted expense record "${target.title}"`, 'expense');
     return true;
   },
